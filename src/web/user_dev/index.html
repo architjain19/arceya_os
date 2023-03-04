@@ -1,0 +1,109 @@
+<html>
+
+<head>
+	<script type="text/javascript" src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js">
+	</script>
+</head>
+
+<body>
+    <h1>Robot command center!</h1>
+
+    <p>Communicate to robots via this webpage</p>
+
+    <button onclick="vel_x()">vel x</button>
+    <button onclick="vel_y()">vel y</button>
+    <button onclick="vel_z()">vel z</button>
+
+</body>
+<script type="text/javascript">
+
+        // -------------- URL
+        var ros = new ROSLIB.Ros({
+            url : 'ws://0:9090'
+        });
+
+
+        // -------------- TOPICS
+        var cmdVel = new ROSLIB.Topic({
+            ros : ros,
+            name : '/cmd_vel',
+            messageType : 'geometry_msgs/Twist'
+        });
+
+
+        // -------------- CONNECT
+        ros.on('connection', function() {
+
+            console.log('Connected to websocket server.');
+            // set twist vel to 0.0
+            update_vel(cmdVel, 0, 0, 0)
+
+        });
+
+        // -------------- ERROR
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+        });
+
+        // -------------- CLOSE
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+        });
+
+
+        function update_vel(cmdVel, vel_x, vel_y, vel_z){
+            var twist_data = new ROSLIB.Message({
+                    linear : {
+                        x : vel_x,
+                        y : vel_y,
+                        z : 0.0
+                    },
+                    angular : {
+                        x : 0.0,
+                        y : 0.0,
+                        z : vel_z
+                    }
+                });
+
+            cmdVel.publish(twist_data);
+            console.log('Velocity message published!');
+        }
+
+
+
+        function vel_x() {
+            console.log('Publishing Linear vel_x');
+            update_vel(cmdVel, 5.0, 0.0, 0.0)
+        }
+
+        function vel_y() {
+            console.log('Publishing Linear vel_y');
+            update_vel(cmdVel, 0.0, 5.0, 0.0)
+        }
+
+        function vel_z() {
+            console.log('Publishing Linear vel_z');
+            update_vel(cmdVel, 0.0, 0.0, 5.0)
+        }
+
+
+
+
+        // Subscribing to a Topic
+        // ----------------------
+
+        // var listener = new ROSLIB.Topic({
+        // ros : ros,
+        // name : '/listener',
+        // messageType : 'std_msgs/String'
+        // });
+
+        // listener.subscribe(function(message) {
+        // console.log('Received message on ' + listener.name + ': ' + message.data);
+        // listener.unsubscribe();
+        // });
+
+
+    </script>
+
+</html>
