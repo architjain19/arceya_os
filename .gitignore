@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # git ls-files --others --exclude-from=.git/info/exclude
 # Lines that start with '#' are comments.
 # For a project mostly in C, the following would be a good set of
@@ -6,12 +7,12 @@
 # *~
 
 #Compiled Directories
-build
-devel
-logs
+build/
+devel/
+logs/
 
 #Installed packages
-.catkin_tools
+.catkin_tools/
 
 #Editor folders
 .idea
