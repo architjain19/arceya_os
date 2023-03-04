@@ -10,9 +10,22 @@
 
     <p>Communicate to robots via this webpage</p>
 
-    <button onclick="vel_x()">vel x</button>
-    <button onclick="vel_y()">vel y</button>
-    <button onclick="vel_z()">vel z</button>
+    <p>
+    <button onclick="vel_px()">vel pos x</button>
+    <button onclick="vel_py()">vel pos y</button>
+    <button onclick="vel_pz()">vel pos z</button>
+    </p>
+    <p>
+        --------------
+        <button onclick="vel_stop()">vel stop</button>
+        --------------
+    </p>
+    <p>
+        <button onclick="vel_nx()">vel neg x</button>
+        <button onclick="vel_ny()">vel neg y</button>
+        <button onclick="vel_nz()">vel neg z</button>
+    </p>
+
 
 </body>
 <script type="text/javascript">
@@ -26,7 +39,7 @@
         // -------------- TOPICS
         var cmdVel = new ROSLIB.Topic({
             ros : ros,
-            name : '/cmd_vel',
+            name : '/mecanum_drive/cmd_vel',
             messageType : 'geometry_msgs/Twist'
         });
 
@@ -70,20 +83,41 @@
         }
 
 
-
-        function vel_x() {
-            console.log('Publishing Linear vel_x');
+        function vel_px() {
+            console.log('Publishing Linear positive vel_x');
             update_vel(cmdVel, 5.0, 0.0, 0.0)
         }
 
-        function vel_y() {
-            console.log('Publishing Linear vel_y');
+        function vel_py() {
+            console.log('Publishing Linear positive vel_y');
             update_vel(cmdVel, 0.0, 5.0, 0.0)
         }
 
-        function vel_z() {
-            console.log('Publishing Linear vel_z');
-            update_vel(cmdVel, 0.0, 0.0, 5.0)
+        function vel_pz() {
+            console.log('Publishing Linear positive vel_z');
+            update_vel(cmdVel, 0.0, 0.0, 15.0)
+        }
+
+
+        function vel_nx() {
+            console.log('Publishing Linear negative vel_x');
+            update_vel(cmdVel, -5.0, 0.0, 0.0)
+        }
+
+        function vel_ny() {
+            console.log('Publishing Linear negative vel_y');
+            update_vel(cmdVel, 0.0, -5.0, 0.0)
+        }
+
+        function vel_nz() {
+            console.log('Publishing Linear negative vel_z');
+            update_vel(cmdVel, 0.0, 0.0, -15.0)
+        }
+
+
+        function vel_stop() {
+            console.log('Publishing zero velocity');
+            update_vel(cmdVel, 0.0, 0.0, 0.0)
         }
 
 

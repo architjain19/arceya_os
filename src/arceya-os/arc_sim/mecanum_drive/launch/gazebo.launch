@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <!-- overwriting these args -->
+    <arg name="robot" default="machines" />
+    <arg name="debug" default="false" />
+    <arg name="gui" default="true" />
+    <arg name="headless" default="false" />
+    <arg name="pause" default="false" />
+
+    <!-- include gazebo_ros launcher -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <!-- <arg name="world_name" value="$(find spawn_robot_tools_pkg)/worlds/model.world" /> -->
+            <arg name="debug" value="$(arg debug)" />
+            <arg name="gui" value="$(arg gui)" />
+            <arg name="paused" value="$(arg pause)" />
+            <arg name="use_sim_time" value="true" />
+            <arg name="headless" value="$(arg headless)" />
+    </include>
+
+
+    <group ns="mecanum_drive">
+
+        <arg name="x" value="0.0" />
+        <arg name="y" value="0.0" />
+        <arg name="z" value="0.0" />
+        <arg name="robot_name" default="mecanum_drive" />
+
+        <arg name="urdf_robot_file" default="$(find mecanum_drive)/urdf/mecanum_drive.urdf" />
+        <param name="/mecanum_drive/robot_description" command="cat $(arg urdf_robot_file)" />
+
+
+        <node name="urdf_spawner_mecanum_drive" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -x $(arg x) -y $(arg y) -z $(arg z)  -model $(arg robot_name) -param /mecanum_drive/robot_description"/>
+
+        <node name="robot_state_publisher_mecanum_drive" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+                <param name="publish_frequency" type="double" value="100.0" />
+        </node>
+
+    </group>
+
+</launch>

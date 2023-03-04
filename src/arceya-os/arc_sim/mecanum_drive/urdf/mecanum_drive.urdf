@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot
+  name="mecanum_drive">
+
+<!-- ____________________base_footprint____________________ -->
+  <link name="base_footprint"></link>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0.1339" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+
+<!-- ____________________base_link____________________ -->
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-8.57323477124194E-06 4.12183737696914E-08 -0.0458675884010096"
+        rpy="0 0 0" />
+      <mass
+        value="1.75920693243415" />
+      <inertia
+        ixx="0.00860602761039983"
+        ixy="-1.68585105500505E-07"
+        ixz="-3.46949414598879E-09"
+        iyy="0.00425348740890311"
+        iyz="-1.2065931606812E-07"
+        izz="0.0123978982868399" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+<!-- ____________________left_rear_wheel____________________ -->
+  <link
+    name="left_rear_wheel">
+    <inertial>
+      <origin
+        xyz="4.57966997657877E-16 0.0264426839970082 -4.44089209850063E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.237837496828432" />
+      <inertia
+        ixx="7.36103610139339E-05"
+        ixy="9.27694120518913E-19"
+        ixz="1.34845996011538E-18"
+        iyy="0.000100313656694017"
+        iyz="5.73566395679295E-18"
+        izz="7.36103610139308E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/left_rear_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/left_rear_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="jleft_rear_wheel"
+    type="continuous">
+    <origin
+      xyz="-0.22 0.271 -0.0639"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_rear_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="2.33"
+      velocity="9.95" />
+  </joint>
+
+
+<!-- ____________________right_rear_wheel____________________ -->
+  <link
+    name="right_rear_wheel">
+    <inertial>
+      <origin
+        xyz="-5.41233724504764E-16 0.0264426848920918 -3.88578058618805E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.237837588894745" />
+      <inertia
+        ixx="7.36104001056538E-05"
+        ixy="3.61934086774223E-18"
+        ixz="-1.54467480113484E-18"
+        iyy="0.000100313683110845"
+        iyz="5.22098266708541E-18"
+        izz="7.36104001056534E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/right_rear_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/right_rear_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="jright_rear_wheel"
+    type="continuous">
+    <origin
+      xyz="-0.22 -0.271 -0.0639"
+      rpy="0 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_rear_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="2.33"
+      velocity="9.95" />
+  </joint>
+
+
+<!-- ____________________left_front_wheel____________________ -->
+  <link
+    name="left_front_wheel">
+    <inertial>
+      <origin
+        xyz="1.66533453693773E-16 0.0264480277829973 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.237837588882781" />
+      <inertia
+        ixx="7.36104001053391E-05"
+        ixy="1.61350625766418E-18"
+        ixz="2.7374418957773E-18"
+        iyy="0.000100313683098781"
+        iyz="-1.39336919823332E-19"
+        izz="7.36104001053374E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/left_front_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/left_front_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="jleft_front_wheel"
+    type="continuous">
+    <origin
+      xyz="0.22 0.271 -0.0639"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_front_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="2.33"
+      velocity="9.95" />
+  </joint>
+
+
+<!-- ____________________right_front_wheel____________________ -->
+  <link
+    name="right_front_wheel">
+    <inertial>
+      <origin
+        xyz="0 0.026448028677494 -1.66533453693773E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.237837496832427" />
+      <inertia
+        ixx="7.36103610284468E-05"
+        ixy="-3.79226506859737E-18"
+        ixz="-2.19314154308093E-18"
+        iyy="0.000100313656670128"
+        iyz="-6.27966238856574E-18"
+        izz="7.36103610284484E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/right_front_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mecanum_drive/meshes/right_front_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="jright_front_wheel"
+    type="continuous">
+    <origin
+      xyz="0.22 -0.271 -0.0639"
+      rpy="0 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_front_wheel" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="2.33"
+      velocity="9.95" />
+  </joint>
+
+
+
+<gazebo>
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometryRate>20.0</odometryRate>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+    </plugin>
+</gazebo>
+
+</robot>
