@@ -2,8 +2,7 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-from cmd_vel_controller.msg import Diff_Drive_Vel
-
+from std_msgs.msg import Float32MultiArray
 
 robot_namespace = "/diff_drive"
 cmd_vel_topic = "/cmd_vel"
@@ -16,6 +15,10 @@ diff_drive_vel_pub = None
 
 def get_params():
     
+    """
+    Description:    Function to get required ros params specified while launching this node.
+    """
+
     global wheel_sep_length, wheel_radius
     
     wheel_sep_length = rospy.get_param('/dd_controller/wheel_sep_length', default=0.220)
@@ -26,12 +29,16 @@ def get_params():
     
 
 def dd_vel_publisher(wheel_front_left, wheel_front_right, wheel_rear_left, wheel_rear_right):
-    dd_msg = Diff_Drive_Vel()
-    
-    dd_msg.front_left_vel = wheel_front_left
-    dd_msg.front_right_vel = wheel_front_right
-    dd_msg.rear_left_vel = wheel_rear_left
-    dd_msg.rear_right_vel = wheel_rear_right
+
+    """
+    Description:    Publisher method which intakes four individual wheel velocities 
+                    derived from inverse kinematics function and publishes on 
+                    `/dd_controller/diff_drive_velocities` topic in array message format.
+    """
+
+    dd_msg = Float32MultiArray()
+
+    dd_msg.data = [wheel_front_left, wheel_front_right, wheel_rear_left, wheel_rear_right]    
     
     diff_drive_vel_pub.publish(dd_msg)
 
@@ -86,7 +93,7 @@ def main():
     get_params()
 
     global diff_drive_vel_pub
-    diff_drive_vel_pub = rospy.Publisher("/dd_controller/diff_drive_velocities", Diff_Drive_Vel, queue_size=10)
+    diff_drive_vel_pub = rospy.Publisher("/dd_controller/diff_drive_velocities", Float32MultiArray, queue_size=10)
 
     sub_topic_name = robot_namespace + cmd_vel_topic
     rospy.Subscriber(sub_topic_name, Twist, cmd_vel_callback)

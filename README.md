@@ -48,13 +48,24 @@ __Use this command to enter docker-container from another terminal or the same o
 `docker exec -it focal_arceya-dev-noetic_1 bash`
 
 
-### Run simulator
 
-__Launch mecanum robot in Gazebo simulator__
+### Run Onboard
+
+__[OPTIONAL]: Launch mecanum robot in Gazebo simulator__
 > `roslaunch mecanum_drive gazebo.launch`
+
+
+__Launch differential drive inverse kinematics controller from cmd vel controller package__
+> `roslaunch cmd_vel_controller dd_controller.launch`
+
 
 __Run rosbridge websocket server to subscribe and publish ros topics/msgs/services over websocket service__
 > `roslaunch rosbridge_server rosbridge_websocket.launch`
+
+
+__Run rosserial node to enable arduino to subscribe respective nodes and operate the robot__
+> `rosrun rosserial_python serial_node.py /dev/ttyACM0`
+
 
 
 ### Run http server and web page on same device

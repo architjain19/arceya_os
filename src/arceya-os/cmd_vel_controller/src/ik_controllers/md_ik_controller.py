@@ -13,7 +13,11 @@ wheel_radius = 0.0          # wheel diameter/2
 
 
 def get_params():
-    
+        
+    """
+    Description:    Function to get required ros params specified while launching this node.
+    """
+
     global wheel_sep_width, wheel_sep_length, wheel_radius
     
     wheel_sep_width = rospy.get_param('/md_controller/wheel_sep_width', default=0.271)
