@@ -2,12 +2,16 @@
 
 import rospy
 from geometry_msgs.msg import Twist
+from cmd_vel_controller.msg import Diff_Drive_Vel
+
 
 robot_namespace = "/diff_drive"
 cmd_vel_topic = "/cmd_vel"
 
 wheel_sep_length = 0.0      # wheel seperation length/2
 wheel_radius = 0.0          # wheel diameter/2
+
+diff_drive_vel_pub = None
 
 
 def get_params():
@@ -20,6 +24,19 @@ def get_params():
     rospy.loginfo("[DD_IK_Controller]: Received launch parameters")
     rospy.loginfo(f"[DD_IK_Controller]: Setting these parameters: [wheel_sep_length]: {wheel_sep_length}\t[wheel_radius]: {wheel_radius}")
     
+
+def dd_vel_publisher(wheel_front_left, wheel_front_right, wheel_rear_left, wheel_rear_right):
+    dd_msg = Diff_Drive_Vel()
+    
+    dd_msg.front_left_vel = wheel_front_left
+    dd_msg.front_right_vel = wheel_front_right
+    dd_msg.rear_left_vel = wheel_rear_left
+    dd_msg.rear_right_vel = wheel_rear_right
+    
+    diff_drive_vel_pub.publish(dd_msg)
+
+    rospy.loginfo("[DD_IK_Controller]: Diff_Drive Individual velocities published")
+
 
 def dd_inverse_kinematics(wheel_radius, wheel_sep_length, dd_vel_x, dd_vel_y, dd_vel_z):
 
@@ -35,6 +52,7 @@ def dd_inverse_kinematics(wheel_radius, wheel_sep_length, dd_vel_x, dd_vel_y, dd
     rospy.loginfo(f"[DD_IK_Controller]: Received a new Twist message: [linear_x]: {dd_vel_x}\t[linear_y]: {dd_vel_y}\t[angular_z]: {dd_vel_z}")
     rospy.loginfo(f"[DD_IK_Controller]: Calculated individual wheel velocities: [Front Left]: {wheel_front_left}\t[Front Right]: {wheel_front_right}\t[Rear Left]: {wheel_rear_left}\t[Rear Right]: {wheel_rear_right}")
 
+    dd_vel_publisher(wheel_front_left, wheel_front_right, wheel_rear_left, wheel_rear_right)
 
 def cmd_vel_callback(data):
 
@@ -66,6 +84,9 @@ def main():
     rospy.loginfo("[DD_IK_Controller]: Differential_drive_controller node has started")
 
     get_params()
+
+    global diff_drive_vel_pub
+    diff_drive_vel_pub = rospy.Publisher("/dd_controller/diff_drive_velocities", Diff_Drive_Vel, queue_size=10)
 
     sub_topic_name = robot_namespace + cmd_vel_topic
     rospy.Subscriber(sub_topic_name, Twist, cmd_vel_callback)
