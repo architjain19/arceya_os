@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+
+from ik_controllers import dd_ik_controller
+dd_ik_controller.main()

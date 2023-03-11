@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <node name="dd_controller" pkg="cmd_vel_controller" type="dd_controller" output="screen">        
+        <param name="wheel_sep_length" type="double" value="0.227"/>    <!-- wheel seperation length/2 -->
+        <param name="wheel_radius" type="double" value="0.0639"/>       <!-- wheel diameter/2 -->
+    </node>
+
+</launch>

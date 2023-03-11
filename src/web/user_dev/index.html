@@ -39,7 +39,8 @@
         // -------------- TOPICS
         var cmdVel = new ROSLIB.Topic({
             ros : ros,
-            name : '/mecanum_drive/cmd_vel',
+            // name : '/mecanum_drive/cmd_vel',
+            name : '/diff_drive/cmd_vel',
             messageType : 'geometry_msgs/Twist'
         });
 
