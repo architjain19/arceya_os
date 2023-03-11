@@ -6,9 +6,10 @@ from geometry_msgs.msg import Twist
 robot_namespace = "/mecanum_drive"
 cmd_vel_topic = "/cmd_vel"
 
-wheel_sep_width = 0.0
-wheel_sep_length = 0.0
-wheel_radius = 0.0
+
+wheel_sep_width = 0.0       # wheel seperation width/2
+wheel_sep_length = 0.0      # wheel seperation length/2
+wheel_radius = 0.0          # wheel diameter/2
 
 
 def get_params():

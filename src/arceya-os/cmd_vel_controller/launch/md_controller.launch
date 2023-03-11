@@ -3,9 +3,9 @@
 <launch>
 
     <node name="md_controller" pkg="cmd_vel_controller" type="md_controller" output="screen">        
-        <param name="wheel_sep_width" type="double" value="0.111"/>
-        <param name="wheel_sep_length" type="double" value="0.220"/>
-        <param name="wheel_radius" type="double" value="0.0639"/>
+        <param name="wheel_sep_width" type="double" value="0.111"/>     <!-- wheel seperation width/2 -->
+        <param name="wheel_sep_length" type="double" value="0.220"/>    <!-- wheel seperation length/2 -->
+        <param name="wheel_radius" type="double" value="0.0639"/>       <!-- wheel diameter/2 -->
     </node>
 
 </launch>
