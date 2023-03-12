@@ -26,6 +26,7 @@
         <button onclick="vel_nz()">vel neg z</button>
     </p>
 
+    <img id="my_image" style='height: 100%; width: 100%; object-fit: contain' src="./placeholder.png">
 
 </body>
 <script type="text/javascript">
@@ -44,6 +45,11 @@
             messageType : 'geometry_msgs/Twist'
         });
 
+        var image_topic = new ROSLIB.Topic({
+            ros: ros, 
+            name: '/usb_cam/image_raw/compressed',
+            messageType: 'sensor_msgs/CompressedImage'
+        });
 
         // -------------- CONNECT
         ros.on('connection', function() {
@@ -51,7 +57,12 @@
             console.log('Connected to websocket server.');
             // set twist vel to 0.0
             update_vel(cmdVel, 0, 0, 0)
+            
+        });
 
+        image_topic.subscribe(function(message) {
+            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
+            // image_topic.unsubscribe();
         });
 
         // -------------- ERROR
