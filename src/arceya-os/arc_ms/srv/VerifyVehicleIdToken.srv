@@ -1,0 +1,5 @@
+string vehicle_id
+string token
+---
+bool success
+string message
