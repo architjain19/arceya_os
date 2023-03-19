@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+
+from arc_auth import arc_auth_node
+arc_auth_node.main()

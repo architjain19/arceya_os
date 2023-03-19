@@ -10,20 +10,31 @@
 
     <p>Communicate to robots via this webpage</p>
 
+    <h2>Verify Auth</h2>
+    <form>
+      <label for="vehicle_id">Vehicle ID:</label>
+      <input type="text" id="vehicle_id" name="vehicle_id"><br><br>
+      <label for="token">Token:</label>
+      <input type="text" id="token" name="token"><br><br>
+      <button type="button" onclick="verifyAuth()">Verify</button>
+    </form>
+    <div id="result"></div>
+
+
     <p>
-    <button onclick="vel_px()">vel pos x</button>
-    <button onclick="vel_py()">vel pos y</button>
-    <button onclick="vel_pz()">vel pos z</button>
+    <button id = "cmd-vel-px" onclick="vel_px()">vel pos x</button>
+    <button id = "cmd-vel-py" onclick="vel_py()">vel pos y</button>
+    <button id = "cmd-vel-pz" onclick="vel_pz()">vel pos z</button>
     </p>
     <p>
         --------------
-        <button onclick="vel_stop()">vel stop</button>
+        <button id = "cmd-vel-vs" onclick="vel_stop()">vel stop</button>
         --------------
     </p>
     <p>
-        <button onclick="vel_nx()">vel neg x</button>
-        <button onclick="vel_ny()">vel neg y</button>
-        <button onclick="vel_nz()">vel neg z</button>
+        <button id = "cmd-vel-nx" onclick="vel_nx()">vel neg x</button>
+        <button id = "cmd-vel-ny" onclick="vel_ny()">vel neg y</button>
+        <button id = "cmd-vel-nz" onclick="vel_nz()">vel neg z</button>
     </p>
 
     <img id="my_image" style='height: 100%; width: 100%; object-fit: contain' src="./placeholder.png">
@@ -56,13 +67,15 @@
 
             console.log('Connected to websocket server.');
             // set twist vel to 0.0
-            update_vel(cmdVel, 0, 0, 0)
-            
-        });
-
-        image_topic.subscribe(function(message) {
-            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-            // image_topic.unsubscribe();
+            // update_vel(cmdVel, 0, 0, 0)
+            document.getElementById("cmd-vel-px").disabled = true;
+            document.getElementById("cmd-vel-py").disabled = true;
+            document.getElementById("cmd-vel-pz").disabled = true;
+            document.getElementById("cmd-vel-vs").disabled = true;
+            document.getElementById("cmd-vel-nx").disabled = true;
+            document.getElementById("cmd-vel-ny").disabled = true;
+            document.getElementById("cmd-vel-nz").disabled = true;
+            document.getElementById("my_image").disabled = true;
         });
 
         // -------------- ERROR
@@ -74,6 +87,67 @@
         ros.on('close', function() {
             console.log('Connection to websocket server closed.');
         });
+
+
+
+
+
+
+
+        function verifyAuth() {
+            // Get the vehicle ID and token values from the form
+            var vehicle_id = document.getElementById("vehicle_id").value;
+            var token = document.getElementById("token").value;
+
+            // Create a ROS service client for the VerifyAuth service
+            var verifyAuthClient = new ROSLIB.Service({
+                ros: ros,
+                name: 'arc_auth/verify_vid_token',
+                serviceType: 'arc_ms/VerifyVehicleIdToken'
+            });
+
+            // Create a service request with the vehicle ID and token values
+            var request = new ROSLIB.ServiceRequest({
+                vehicle_id: vehicle_id,
+                token: token
+            });
+
+            // Call the VerifyAuth service
+            verifyAuthClient.callService(request, function(response) {
+                // Display the authentication result
+                var resultDiv = document.getElementById("result");
+                if (response.success) {
+                    console.log(response.message);
+                    resultDiv.innerHTML = '<p style="color:green;">' + response.message + '</p>';
+                    document.getElementById("cmd-vel-px").disabled = false;
+                    document.getElementById("cmd-vel-py").disabled = false;
+                    document.getElementById("cmd-vel-pz").disabled = false;
+                    document.getElementById("cmd-vel-vs").disabled = false;
+                    document.getElementById("cmd-vel-nx").disabled = false;
+                    document.getElementById("cmd-vel-ny").disabled = false;
+                    document.getElementById("cmd-vel-nz").disabled = false;
+                    document.getElementById("my_image").disabled = false;
+
+                    update_vel(cmdVel, 0, 0, 0)
+                    image_topic.subscribe(function(message) {
+                        document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
+                        // image_topic.unsubscribe();
+                    });
+                    
+                } else {
+                    console.log(response.message);
+                    resultDiv.innerHTML = '<p style="color:red;">' + response.message + '</p>';
+                    document.getElementById("cmd-vel-px").disabled = true;
+                    document.getElementById("cmd-vel-py").disabled = true;
+                    document.getElementById("cmd-vel-pz").disabled = true;
+                    document.getElementById("cmd-vel-vs").disabled = true;
+                    document.getElementById("cmd-vel-nx").disabled = true;
+                    document.getElementById("cmd-vel-ny").disabled = true;
+                    document.getElementById("cmd-vel-nz").disabled = true;
+                    document.getElementById("my_image").disabled = true;
+                }
+            });
+        }
 
 
         function update_vel(cmdVel, vel_x, vel_y, vel_z){

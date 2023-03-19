@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <node name="arc_auth" pkg="arc_ms" type="arc_auth" output="screen">        
+    </node>
+
+</launch>
