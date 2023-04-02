@@ -10,15 +10,15 @@
 
 
         <!-- roslaunch rosbridge_server rosbridge_websocket.launch -->
-        <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
             <arg name="port" value="9090"/>
             <arg name="ssl" value="True"/>
             <arg name="certfile" value="$(find arc_ms)/cert.pem"/>
             <arg name="keyfile" value="$(find arc_ms)/key.pem"/>
-        </include>
-        <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
-            <arg name="port" value="9090"/>
         </include> -->
+        <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
+            <arg name="port" value="9090"/>
+        </include>
 
         <!-- roslaunch arc_ms arc_ms.launch -->
         <node name="arc_auth" pkg="arc_ms" type="arc_auth" output="screen" />
